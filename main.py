@@ -1,3 +1,4 @@
+
 print("Welcome to StudyBuddy")
 
 tasks = []
@@ -6,7 +7,8 @@ while True:
     print(''' ===== STUDYBUDDY =====
     1. Add Task
     2. View Tasks
-    3. Exit
+    3. Mark Task as Completed
+    4. Exit
 
     ''')
 
@@ -14,7 +16,7 @@ while True:
     # print(choice)
     # print(type(choice))
 
-
+    # Add a new task
     if choice == "1":
         print("Add Task Selected")
         course = input("Enter course: ")
@@ -24,28 +26,28 @@ while True:
         priority = input("Enter priority (High/Medium/Low): ")
 
         task = {
-            "ID" : len(tasks) + 1,
-            "Course" : course,
-            "Description" : description,
-            "Deadline" : deadline,
-            "Status" : "Pending",
-            "Study Time" : study_time,
-            "Priority" : priority
+            "ID": len(tasks) + 1,
+            "Course": course,
+            "Description": description,
+            "Deadline": deadline,
+            "Status": "Pending",
+            "Study Time": study_time,
+            "Priority": priority
         }
+
         tasks.append(task)
         print("Task added successfully")
 
         print()
 
-
-        
-
+    # View existing tasks
     elif choice == "2":
         print("View Tasks Selected")
+
         if len(tasks) == 0:
             print("No tasks found.")
 
-        else: 
+        else:
             print("===== YOUR TASKS =====")
 
             for task in tasks:
@@ -60,9 +62,28 @@ while True:
                 -----------------------------
 ''')
 
+    # Mark a task as completed
     elif choice == "3":
+        task_completed_ID = int(input("Enter the ID of the Task you have completed: "))
+
+        found = False
+
+        for task in tasks:
+            if task_completed_ID == task["ID"]:
+                task["Status"] = "Completed"
+                found = True
+                break
+
+        if found:
+            print("Task completed successfully!")
+        else:
+            print("Task not found!")
+
+    # Exit the program
+    elif choice == "4":
         print("Goodbye!")
         break
 
     else:
         print("Invalid choice")
+
