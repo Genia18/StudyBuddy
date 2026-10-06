@@ -1,7 +1,24 @@
+import json
 
 print("Welcome to StudyBuddy")
 
-tasks = []
+# Save tasks into a JSON file
+def save_tasks():
+    with open("tasks.json", "w") as file:
+        json.dump(tasks, file)
+
+
+# Load saved tasks from the JSON file
+def load_tasks():
+    try:
+        with open("tasks.json", "r") as file:
+            tasks = json.load(file)
+            return tasks
+    except FileNotFoundError:
+        return []
+
+
+tasks = load_tasks()
 
 while True:
     print(''' ===== STUDYBUDDY =====
@@ -19,6 +36,7 @@ while True:
     # Add a new task
     if choice == "1":
         print("Add Task Selected")
+
         course = input("Enter course: ")
         description = input("Enter task description: ")
         deadline = input("Enter deadline: ")
@@ -36,6 +54,7 @@ while True:
         }
 
         tasks.append(task)
+        save_tasks()
         print("Task added successfully")
 
         print()
@@ -75,6 +94,7 @@ while True:
                 break
 
         if found:
+            save_tasks()
             print("Task completed successfully!")
         else:
             print("Task not found!")
