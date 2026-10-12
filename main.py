@@ -2,30 +2,55 @@ import json
 
 print("Welcome to StudyBuddy")
 
-# Save tasks into a JSON file
+# Save tasks and the next available ID
 def save_tasks():
     with open("tasks.json", "w") as file:
-        json.dump(tasks, file)
+        data = {
+            "tasks": tasks,
+            "next_id": next_id
+        }
+
+        json.dump(data, file, indent=4)
 
 
 # Load saved tasks from the JSON file
+# Load tasks and the next available ID
 def load_tasks():
     try:
         with open("tasks.json", "r") as file:
-            tasks = json.load(file)
-            return tasks
+            data = json.load(file)
+
+            # Handle the old format: a list of tasks
+            if isinstance(data, list):
+                tasks = data
+
+                # Start after the largest existing ID
+                if tasks:
+                    next_id = max(task["ID"] for task in tasks) + 1
+                else:
+                    next_id = 1
+
+            # Handle the new format: a dictionary
+            else:
+                tasks = data["tasks"]
+                next_id = data["next_id"]
+
+            return tasks, next_id
+
     except FileNotFoundError:
-        return []
+        return [], 1
 
 
-tasks = load_tasks()
+tasks, next_id = load_tasks()
 
 while True:
     print(''' ===== STUDYBUDDY =====
     1. Add Task
     2. View Tasks
     3. Mark Task as Completed
-    4. Exit
+    4. Edit Task
+    5. Delete Task
+    6. Exit
 
     ''')
 
@@ -44,7 +69,7 @@ while True:
         priority = input("Enter priority (High/Medium/Low): ")
 
         task = {
-            "ID": len(tasks) + 1,
+            "ID": next_id,
             "Course": course,
             "Description": description,
             "Deadline": deadline,
@@ -54,6 +79,7 @@ while True:
         }
 
         tasks.append(task)
+        next_id += 1
         save_tasks()
         print("Task added successfully")
 
@@ -99,78 +125,106 @@ while True:
         else:
             print("Task not found!")
 
-    # Exit the program
+    # Edit/Update Existing Tasks
     elif choice == "4":
+        edit_task_ID = int(input("Enter the ID of the task you want to edit: "))
+
+        found = False 
+
+        for task in tasks: 
+
+            if edit_task_ID == task["ID"]:
+                found = True
+                break
+
+        if found: 
+            print("Task found!")
+
+            # Display the task's current information
+            print("Current Task:")
+            print(task)
+
+            print("What would you like to edit?")
+            print("1. Course")
+            print("2. Description")
+            print("3. Deadline")
+            print("4. Status")
+            print("5. Cancel")
+
+        else: 
+            print("Task not found!")
+
+
+        edit_choice = input("Enter your choice (1-4): ")
+
+        if edit_choice == "1":
+            new_course = input("Enter the new course: ")
+            task["Course"] = new_course
+            #save_tasks()
+
+            print("Task updated successfully!")
+            print(task)
+        elif edit_choice =="2":
+            new_description = input("Enter the new description: ")
+            task["Description"] = new_description
+            #save_tasks()
+
+            print("Task updated successfully!")
+            print(task)
+        elif edit_choice == "3":
+            new_deadline = input("Enter the new deadline: ")
+            task["Deadline"] = new_deadline
+            #save_tasks()
+
+            print("Task updated successfully!")
+            print(task)
+        elif edit_choice == "4":
+            new_status = input("Enter the new status: ")
+            task["Status"] = new_status
+
+            #save_tasks()
+            print("Task updated successfully!")
+            print(task)
+
+        elif edit_choice == "5":
+            print("Edit Cancelled.")
+        else :
+            print("Invalid choice. Please enter a number from 1 to 4.")
+
+
+        # Save and confirm only after a valid choice
+        if choice in ("1", "2", "3", "4"):
+            save_tasks()
+            print("Task updated successfully!")
+            print(task)
+
+    elif choice == "5":
+        # Milestone 7 - Deleting a Task(s)
+        delete_task_ID = int(input("Enter the ID of the task you want to delete: "))
+        found = False
+
+        for task in tasks:
+            if delete_task_ID == task["ID"]:
+                tasks.remove(task)
+                found = True
+                break
+
+        if found:
+            save_tasks()
+            print("Task deleted successfully!")
+        else:
+            print("Task not found!")
+
+
+    # Exit the program
+    elif choice == "6":
         print("Goodbye!")
         break
 
     else:
         print("Invalid choice")
 
-# Edit/Update Existing Tasks
-edit_task_ID = int(input("Enter the ID of the task you want to edit: "))
-
-found = False 
-
-for task in tasks: 
-
-    if edit_task_ID == task["ID"]:
-        found = True
-        break
-
-if found: 
-    print("Task found!")
-
-    # Display the task's current information
-    print("Current Task:")
-    print(task)
-
-    print("What would you like to edit?")
-    print("1. Course")
-    print("2. Description")
-    print("3. Deadline")
-    print("4. Status")
-
-else: 
-    print("Task not found!")
 
 
-choice = input("Enter your choice (1-4): ")
-
-if choice == "1":
-    new_course = input("Enter the new course: ")
-    task["Course"] = new_course
-    #save_tasks()
-
-    print("Task updated successfully!")
-    print(task)
-elif choice =="2":
-    new_description = input("Enter the new description: ")
-    task["Description"] = new_description
-    #save_tasks()
-
-    print("Task updated successfully!")
-    print(task)
-elif choice == "3":
-    new_deadline = input("Enter the new deadline: ")
-    task["Deadline"] = new_deadline
-    #save_tasks()
-
-    print("Task updated successfully!")
-    print(task)
-elif choice == "4":
-    new_status = input("Enter the new status: ")
-    task["Status"] = new_status
-
-    #save_tasks()
-    print("Task updated successfully!")
-    print(task)
-else :
-    print("Invalid choice. Please enter a number from 1 to 4.")
 
 
-# Save and confirm only after a valid choice
-if choice in ("1", "2", "3", "4"):
-    save_tasks()
-    print("Task updated successfully!")
-    print(task)

@@ -1,1 +1,32 @@
-[{"ID": 1, "Course": "AI", "Description": "AI", "Deadline": "todya", "Status": "Completed", "Study Time": "1", "Priority": "Low"}]
+{
+    "tasks": [
+        {
+            "ID": 2,
+            "Course": "Python",
+            "Description": "Looping",
+            "Deadline": "10/10/10",
+            "Status": "Pending",
+            "Study Time": "4",
+            "Priority": "high"
+        },
+        {
+            "ID": 3,
+            "Course": "Machine learning",
+            "Description": "Supervised and unsupervised learning",
+            "Deadline": "10/12/2020",
+            "Status": "Pending",
+            "Study Time": "5",
+            "Priority": "High"
+        },
+        {
+            "ID": 4,
+            "Course": "Distributed systems",
+            "Description": "Works and collaboration",
+            "Deadline": "10/12/2020",
+            "Status": "Pending",
+            "Study Time": "5",
+            "Priority": "low"
+        }
+    ],
+    "next_id": 5
+}
