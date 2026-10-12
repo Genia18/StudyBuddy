@@ -107,3 +107,70 @@ while True:
     else:
         print("Invalid choice")
 
+# Edit/Update Existing Tasks
+edit_task_ID = int(input("Enter the ID of the task you want to edit: "))
+
+found = False 
+
+for task in tasks: 
+
+    if edit_task_ID == task["ID"]:
+        found = True
+        break
+
+if found: 
+    print("Task found!")
+
+    # Display the task's current information
+    print("Current Task:")
+    print(task)
+
+    print("What would you like to edit?")
+    print("1. Course")
+    print("2. Description")
+    print("3. Deadline")
+    print("4. Status")
+
+else: 
+    print("Task not found!")
+
+
+choice = input("Enter your choice (1-4): ")
+
+if choice == "1":
+    new_course = input("Enter the new course: ")
+    task["Course"] = new_course
+    #save_tasks()
+
+    print("Task updated successfully!")
+    print(task)
+elif choice =="2":
+    new_description = input("Enter the new description: ")
+    task["Description"] = new_description
+    #save_tasks()
+
+    print("Task updated successfully!")
+    print(task)
+elif choice == "3":
+    new_deadline = input("Enter the new deadline: ")
+    task["Deadline"] = new_deadline
+    #save_tasks()
+
+    print("Task updated successfully!")
+    print(task)
+elif choice == "4":
+    new_status = input("Enter the new status: ")
+    task["Status"] = new_status
+
+    #save_tasks()
+    print("Task updated successfully!")
+    print(task)
+else :
+    print("Invalid choice. Please enter a number from 1 to 4.")
+
+
+# Save and confirm only after a valid choice
+if choice in ("1", "2", "3", "4"):
+    save_tasks()
+    print("Task updated successfully!")
+    print(task)
