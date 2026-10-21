@@ -200,20 +200,28 @@ while True:
 
     elif choice == "5":
         # Milestone 7 - Deleting a Task(s)
-        delete_task_ID = int(input("Enter the ID of the task you want to delete: "))
+
+        # Milestone 8 - Input Validation
+
         found = False
+        try:
+            delete_task_id = int(input("Enter your task ID: "))
+            for task in tasks: 
 
-        for task in tasks:
-            if delete_task_ID == task["ID"]:
-                tasks.remove(task)
-                found = True
-                break
+                if delete_task_id == task["ID"]:
+                    found = True
+                    tasks.remove(task)
+                    save_tasks()
+                    break
 
-        if found:
-            save_tasks()
-            print("Task deleted successfully!")
-        else:
-            print("Task not found!")
+            if not found:
+                print("Task not found")
+            else: 
+                print("Task deleted successfully!!")
+
+
+        except ValueError: 
+            print("ID is invalid. \nPlease enter a valid ID number.")
 
 
     # Exit the program
@@ -223,6 +231,9 @@ while True:
 
     else:
         print("Invalid choice")
+
+
+
 
 
 
